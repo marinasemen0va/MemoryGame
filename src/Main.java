@@ -7,10 +7,8 @@
 // imports
 import processing.core.PApplet;
 import processing.core.PFont;
-import java.io.BufferedReader;
+
 import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
 
 // code
 public class Main extends PApplet {
@@ -413,35 +411,16 @@ public class Main extends PApplet {
 
     // startup import
     public void startupImport(){
-        String f = "packages/packages.txt"; // TODO: system can't find file reeeeee
-        String line = "";
-        int n = 0;
-        File inputFile = new File (f);
-        if (!inputFile.exists()){
-            // TODO: create file
+        String f = "data/packages/packages.txt";
+        File inputFile = dataFile(f);
+        if (!inputFile.isFile()){
+            String[] empty = {""};
+            saveStrings(f, empty); // TODO: test
         }
-        try {
-            BufferedReader r = new BufferedReader(new FileReader(f));
-            while (line != null) {
-                line = r.readLine();
-                n++;
-            }
-            r.close();
-        } catch (IOException e) {
-            print(e);
-        }
-        packagesNum = n;
-        String[] fileNames = new String[n];
-        try {
-            BufferedReader reader = new BufferedReader(new FileReader(f));
-            int x = 0;
-            while (x < n){
-                fileNames[x] = reader.readLine();
-                x++;
-            }
-            reader.close();
-        } catch (IOException e) {
-            print(e);
+        String[] fileNames = loadStrings(f);
+        packagesNum = fileNames.length;
+        for (int x = 0 ; x < packagesNum; x++) {
+            println(fileNames[x]); // TODO: import into game
         }
     }
 
