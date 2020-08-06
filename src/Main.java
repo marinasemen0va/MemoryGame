@@ -7,7 +7,10 @@
 // imports
 import processing.core.PApplet;
 import processing.core.PFont;
-import processing.core.PImage;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
 
 // code
 public class Main extends PApplet {
@@ -15,7 +18,7 @@ public class Main extends PApplet {
 
     // main
     PFont font, dyslexiaFont;
-    int screen = 0, nextScreen;
+    int screen = -1, nextScreen;
         /*
         -1 - preloader
         0 - name
@@ -25,7 +28,6 @@ public class Main extends PApplet {
         4 - exit
         5 - import files
         */
-    String[][] packages;
 
     // transition
     int transitionTime = 0;
@@ -39,12 +41,18 @@ public class Main extends PApplet {
     String name = "";
     String error = "";
 
+    // file stuff
+    String[][] packages;
+    String fileName = "";
+    int packagesNum = 0;
+
     // SETUP
 
     // settings
     public void settings() {
         fullScreen();
         smooth(0);
+        startupImport();
     }
 
     // setup
@@ -104,13 +112,33 @@ public class Main extends PApplet {
                     name = name + key;
                 }
             }
-        } else if (screen == 1) {
+        }
+        if (screen == 1) {
             if (key == ENTER) {
                 nextScreen = 2;
                 inTransition = true;
             }
-        } else if (screen == 2){
-            menu();
+        }
+        if (screen == 5) {
+            if (fileName.length() >= 12) {
+                error = "the file name cannot be longer!";
+                if (key == BACKSPACE) {
+                    fileName = fileName.substring(0, fileName.length()-1);
+                    error = "";
+                }
+            } else {
+                error = "";
+                if (key == BACKSPACE) {
+                    if (fileName.length() <= 1){
+                        fileName = "";
+                    } else {
+                        fileName = fileName.substring(0, fileName.length() - 1);
+                    }
+                }
+                else {
+                    fileName = fileName + key;
+                }
+            }
         }
     }
 
@@ -140,9 +168,15 @@ public class Main extends PApplet {
                 nextScreen = 4;
                 inTransition = true;
             }
-            if (mouseX >= 60 && mouseX <= 200 && mouseY >= height-100 && mouseY <= height-45){
-                nextScreen = 5;
-                inTransition = true;
+            if (packagesNum == 0) {// TODO
+                if (sq(mouseX - 75) + sq(mouseY - (height - 75)) <= sq(30)) {
+                    nextScreen = 5;
+                    inTransition = true;
+                }
+            } else {
+                if (mouseX >= 60 && mouseX <= 200 && mouseY >= height - 100 && mouseY <= height - 45) {
+                    // TODO edit screen and show + button while hiding edit button
+                }
             }
         }
         if (screen == 3) {
@@ -154,6 +188,25 @@ public class Main extends PApplet {
         if (screen == 4){
             if (mouseX >= width/2-60 && mouseX <= width/2 + 60 && mouseY >= height - 200 && mouseY <= height - 200 + 55) {
                 exit();
+            }
+        }
+        if (screen == 5) {
+            if (mouseX >= width/2-60 && mouseX <= width/2 + 60 && mouseY >= height - 200 && mouseY <= height - 200 + 55) {
+                if (fileName.equals("")){
+                    error = "enter a file name!";
+                } else {
+                    fileIO(fileName); // TODO: try import and give error if exception
+                    if (true) { // TODO
+                        nextScreen = 2;
+                        inTransition = true;
+                    } else {
+                        error = "oops! something went wrong!";
+                    }
+                }
+            }
+            if (mouseX >= 60 && mouseX <= 180 && mouseY >= height - 100 && mouseY <= height - 100 + 55) {
+                nextScreen = 2;
+                inTransition = true;
             }
         }
     }
@@ -221,18 +274,18 @@ public class Main extends PApplet {
         background(166,242,255);
         rectFormat(width/2-400, 25, 800, 100, 7, 80, 211, 255, false);
         textFormat("I am Speed: a Memory Game", width/2, 75, 48, 1, 80, 211, 255);
-        int files = fileIO();
-        if (files == 0){
+        if (packagesNum == 0){ // TODO true = only run if there are no packages
             textFormat("There are no packages yet :(", width/2, height/2, 36, 1, 255,255, 255);
+            ellipseFormat("+", 75, height - 75, 80, 211, 255, 0);
         } else {
-            for (int x = 0; x < files; x++){
+            for (int x = 0; x < packagesNum; x++){
                 print("temp");
             }
+            rectFormat(60, height - 100, 100, 55, 7, 80, 211, 255, true);
+            textFormat("edit", 75, height - 75, 36, 2, 80, 211, 255);
         }
         ellipseFormat("i", width - 75, height - 75, 80, 211, 255, 0);
         ellipseFormat("x", width - 75, 75, 80, 211, 255, -3);
-        rectFormat(60, height-100, 140, 55, 7, 80, 211, 255, true);
-        textFormat("import", 75, height-75, 36, 2, 80, 211, 255);
     }
 
     // info
@@ -259,9 +312,14 @@ public class Main extends PApplet {
         background(207,255,149);
         rectFormat(width/2 - 200, height/2 - 25, 400, 50, 7, 110,217, 90, false);
         textFormat("Please enter the file name:", width/2, height/2 - 75, 48, 1, 255, 255, 255);
-        textFormat("placeholder", width / 2 - 175, height / 2, 32, 2, 91, 91, 91);
+        textFormat(fileName, width / 2 - 175, height / 2, 32, 2, 91, 91, 91);
         textFormat(error, width/2 - 180, height/2 + 50, 18, 2, 234, 7, 0);
+        rectFormat(width/2-70, height - 200, 140, 55, 7, 110,217, 90, true);
+        textFormat("import", width/2, height - 175, 36, 1, 110,217, 90);
+        rectFormat(60, height-100, 120, 55, 7, 110,217, 90, true);
+        textFormat("back", 75, height-75, 36, 2, 110,217, 90);
     }
+
     // HELPER METHODS
 
     // transition
@@ -274,6 +332,8 @@ public class Main extends PApplet {
         if (transitionTime > 50) {
             inTransition = false;
             transitionTime = 0;
+            error = "";
+            fileName = "";
         }
         fill(0, transparency);
         noStroke();
@@ -330,22 +390,6 @@ public class Main extends PApplet {
         text(s, x, y, w, h);
     }
 
-    // bordered rect
-    public void rectFormat(int x, int y, int w, int h, int r, int g, int b, boolean button) {
-        if (button) {
-            if (mouseX >= x && mouseX <= x+w && mouseY >= y && mouseY <= y+h){
-                fill(0, 0, 0, 75);
-                strokeWeight(5);
-                stroke (0, 0, 0, 75);
-                rect(x + 2, y + 2, w, h);
-            }
-        }
-        fill(255);
-        strokeWeight(5);
-        stroke(r,g,b);
-        rect(x, y, w, h);
-    }
-
     // rounded bordered rect
     public void rectFormat(int x, int y, int w, int h, int radius, int r, int g, int b, boolean button) {
         if (button) {
@@ -363,9 +407,43 @@ public class Main extends PApplet {
     }
 
     // file IO
-    public int fileIO() {
+    public int fileIO(String f) {
         return 0;
     } // TODO
+
+    // startup import
+    public void startupImport(){
+        String f = "packages/packages.txt"; // TODO: system can't find file reeeeee
+        String line = "";
+        int n = 0;
+        File inputFile = new File (f);
+        if (!inputFile.exists()){
+            // TODO: create file
+        }
+        try {
+            BufferedReader r = new BufferedReader(new FileReader(f));
+            while (line != null) {
+                line = r.readLine();
+                n++;
+            }
+            r.close();
+        } catch (IOException e) {
+            print(e);
+        }
+        packagesNum = n;
+        String[] fileNames = new String[n];
+        try {
+            BufferedReader reader = new BufferedReader(new FileReader(f));
+            int x = 0;
+            while (x < n){
+                fileNames[x] = reader.readLine();
+                x++;
+            }
+            reader.close();
+        } catch (IOException e) {
+            print(e);
+        }
+    }
 
     // ellipse format
     public void ellipseFormat(String s, int x, int y, int r, int g, int b, int adj){
