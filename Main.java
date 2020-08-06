@@ -19,7 +19,7 @@ public class Main extends PApplet {
 
     // main
     PFont font, dyslexiaFont;
-    int screen = 2, nextScreen; // TODO
+    int screen = -1, nextScreen;
         /*
         -1 - preloader
         0 - name
@@ -48,7 +48,8 @@ public class Main extends PApplet {
     String fileName = "";
     int packagesNum = 0;
     boolean edit = false;
-    ArrayList<Integer> toDelete = new ArrayList<Integer>();
+    boolean[] toDelete;
+    String f = "packages/packages.txt";
 
     // SETUP
 
@@ -96,51 +97,53 @@ public class Main extends PApplet {
 
     // key pressed
     public void keyPressed() {
-        if (screen == 0) {
-            if (name.length() >= 12) {
-                error = "your name cannot be longer!";
-                if (key == BACKSPACE) {
-                    name = name.substring(0, name.length()-1);
+        if (key != ENTER) {
+            if (screen == 0) {
+                if (name.length() >= 12) {
+                    error = "your name cannot be longer!";
+                    if (key == BACKSPACE) {
+                        name = name.substring(0, name.length()-1);
+                        error = "";
+                    }
+                } else {
                     error = "";
-                }
-            } else {
-                error = "";
-                if (key == BACKSPACE) {
-                    if (name.length() <= 1){
-                        name = "";
-                    } else {
-                        name = name.substring(0, name.length() - 1);
+                    if (key == BACKSPACE) {
+                        if (name.length() <= 1){
+                            name = "";
+                        } else {
+                            name = name.substring(0, name.length() - 1);
+                        }
+                    }
+                    else {
+                        name = name + key;
                     }
                 }
-                else {
-                    name = name + key;
+            }
+            if (screen == 1) {
+                if (key == ENTER) {
+                    nextScreen = 2;
+                    inTransition = true;
                 }
             }
-        }
-        if (screen == 1) {
-            if (key == ENTER) {
-                nextScreen = 2;
-                inTransition = true;
-            }
-        }
-        if (screen == 5) {
-            if (fileName.length() >= 12) {
-                error = "the file name cannot be longer!";
-                if (key == BACKSPACE) {
-                    fileName = fileName.substring(0, fileName.length()-1);
-                    error = "";
-                }
-            } else {
-                error = "";
-                if (key == BACKSPACE) {
-                    if (fileName.length() <= 1){
-                        fileName = "";
-                    } else {
-                        fileName = fileName.substring(0, fileName.length() - 1);
+            if (screen == 5) {
+                if (fileName.length() >= 12) {
+                    error = "the file name cannot be longer!";
+                    if (key == BACKSPACE) {
+                        fileName = fileName.substring(0, fileName.length()-1);
+                        error = "";
                     }
-                }
-                else {
-                    fileName = fileName + key;
+                } else {
+                    error = "";
+                    if (key == BACKSPACE) {
+                        if (fileName.length() <= 1){
+                            fileName = "";
+                        } else {
+                            fileName = fileName.substring(0, fileName.length() - 1);
+                        }
+                    }
+                    else {
+                        fileName = fileName + key;
+                    }
                 }
             }
         }
@@ -172,33 +175,43 @@ public class Main extends PApplet {
                 nextScreen = 4;
                 inTransition = true;
             }
-            if (packagesNum == 0) {// TODO
+            if (packagesNum == 0) {
                 if (sq(mouseX - 75) + sq(mouseY - (height - 75)) <= sq(30)) { // +
                     nextScreen = 5;
                     inTransition = true;
                 }
             } else {
-                if (edit && mouseX >= 60 && mouseX <= 180 && mouseY >= height - 100 && mouseY <= height - 100 + 55) { // back from edit
+                if (edit && mouseX >= width - 200 && mouseX <= width - 200 + 120 && mouseY >= height - 100 && mouseY <= height - 100 + 55) { // back from edit
                     edit = false;
-                    toDelete.clear();
+                    toDelete = null;
                 } else if (edit && sq(mouseX - 75) + sq(mouseY - (height - 75)) <= sq(30)) { // +
                     nextScreen = 5;
                     inTransition = true;
                 } else if (!edit && mouseX >= 60 && mouseX <= 200 && mouseY >= height - 100 && mouseY <= height - 45) { // edit
                     edit = true;
+                    toDelete = new boolean[packagesNum];
+                    for (int x =0; x < packagesNum; x++){
+                        toDelete[x] = false;
+                    }
                 }
             }
             // button stuff
             if (edit) { // add to delete list & brighten/unbrighten
                 for (int x = 0; x < packagesNum; x++) {
-                    rectFormat(width/2-300, 175 + (75 * x), 600, 50, 7, 80, 211, 255, true);
-                    textFormat(packages.get(x)[0], width/2, 200 + (75 * x), 32, 1, 80, 211, 255);
+                    if (mouseX >= width/2-300 && mouseX <= width/2+300 && mouseY >= 175 + (75 * x) && mouseY <= 175 + (75 * x) + 50) {
+                        toDelete[x] = !toDelete[x];
+                    }
                 }
             } else { // go to game
-                for (int x = 0; x < packagesNum; x++) {
+                /*for (int x = 0; x < packagesNum; x++) {
                     rectFormat(width/2-300, 175 + (75 * x), 600, 50, 7, 80, 211, 255, true);
                     textFormat(packages.get(x)[0], width/2, 200 + (75 * x), 32, 1, 80, 211, 255);
-                }
+                }*/
+            }
+            if (edit && checkDelete() && mouseX >= width / 2 - 70 && mouseX <= width / 2 + 70 && mouseY >= height - 75 && mouseY <= height - 75 + 55) {
+                runDelete();
+                edit = false;
+                toDelete = null;
             }
         }
         if (screen == 3) {
@@ -217,8 +230,10 @@ public class Main extends PApplet {
                 if (fileName.equals("")){
                     error = "enter a file name!";
                 } else {
-                    fileIO(fileName); // TODO: try import and give error if exception
-                    if (true) { // TODO
+                    boolean status = fileIO(fileName);
+                    if (status) {
+                        edit = false;
+                        toDelete = null;
                         nextScreen = 2;
                         inTransition = true;
                     } else {
@@ -227,9 +242,10 @@ public class Main extends PApplet {
                 }
             }
             if (mouseX >= 60 && mouseX <= 180 && mouseY >= height - 100 && mouseY <= height - 100 + 55) {
+                edit = false;
+                toDelete = null;
                 nextScreen = 2;
                 inTransition = true;
-                edit = false;
             }
         }
     }
@@ -297,7 +313,7 @@ public class Main extends PApplet {
         background(166,242,255);
         rectFormat(width/2-400, 25, 800, 100, 7, 80, 211, 255, false);
         textFormat("I am Speed: a Memory Game", width/2, 75, 48, 1, 80, 211, 255);
-        if (packagesNum == 0){ // TODO true = only run if there are no packages
+        if (packagesNum == 0){
             textFormat("There are no packages yet :(", width/2, height/2, 36, 1, 255,255, 255);
             ellipseFormat("+", 75, height - 75, 80, 211, 255, 0);
         } else {
@@ -306,7 +322,7 @@ public class Main extends PApplet {
                 textFormat("edit", 75, height - 75, 36, 2, 80, 211, 255);
                 // buttons
                 if (packagesNum > 6) {
-                    packagesNum = 6; // TODO: remove excess imports from variables and file
+                    packagesNum = 6; // TODO: remove excess imports from variables and file (since writing is broken rn do later)
                 }
                 for (int x = 0; x < packagesNum; x++) {
                     rectFormat(width/2-300, 175 + (75 * x), 600, 50, 7, 80, 211, 255, true);
@@ -316,14 +332,24 @@ public class Main extends PApplet {
                 if (packagesNum < 6) {
                     ellipseFormat("+", 75, height - 75, 80, 211, 255, 0);
                 }
-                rectFormat(width/2-70, height - 75, 140, 55, 7, 91, 91, 91, true);
-                textFormat("delete", width/2, height - 50, 36, 1, 91, 91, 91);
-                for (int x = 0; x < packagesNum; x++) {
-                    rectFormat(width/2-300, 175 + (75 * x), 600, 50, 7, 91, 91, 91, true);
-                    textFormat(packages.get(x)[0], width/2, 200 + (75 * x), 32, 1, 91, 91, 91);
+                if (!checkDelete()) {
+                    rectFormat(width / 2 - 70, height - 75, 140, 55, 7, 91, 91, 91, true);
+                    textFormat("delete", width / 2, height - 50, 36, 1, 91, 91, 91);
+                } else {
+                    rectFormat(width / 2 - 70, height - 75, 140, 55, 7, 80, 211, 255, true);
+                    textFormat("delete", width / 2, height - 50, 36, 1, 80, 211, 255);
                 }
-                rectFormat(60, height-100, 120, 55, 7, 80, 211, 255, true);
-                textFormat("back", 75, height-75, 36, 2, 80, 211, 255);
+                for (int x = 0; x < packagesNum; x++) {
+                    if (!toDelete[x]) {
+                        rectFormat(width / 2 - 300, 175 + (75 * x), 600, 50, 7, 91, 91, 91, true);
+                        textFormat(packages.get(x)[0], width / 2, 200 + (75 * x), 32, 1, 91, 91, 91);
+                    } else {
+                        rectFormat(width / 2 - 300, 175 + (75 * x), 600, 50, 7, 80, 211, 255, true);
+                        textFormat(packages.get(x)[0], width / 2, 200 + (75 * x), 32, 1, 80, 211, 255);
+                    }
+                }
+                rectFormat(width - 200, height-100, 120, 55, 7, 80, 211, 255, true);
+                textFormat("back", width - 185, height-75, 36, 2, 80, 211, 255);
             }
         }
         if (!edit) {
@@ -341,7 +367,7 @@ public class Main extends PApplet {
         textFormat("txt", width/2 - 250, height/2 - 250, 500,500, 32, 1, 255,255,255);
         rectFormat(width/2-60, height - 200, 120, 55, 7, 215, 158, 156, true);
         textFormat("back", width/2, height - 175, 36, 1, 215, 158, 156);
-    }
+    } // TODO
 
     // exit
     public void exitGame() {
@@ -451,13 +477,19 @@ public class Main extends PApplet {
     }
 
     // file IO
-    public int fileIO(String f) {
-        return 0;
-    } // TODO
+    public boolean fileIO(String f) {
+        String[] newPackage = loadStrings("data/packages/" + f + ".txt");
+        if (newPackage == null) {
+            return false;
+        }
+        packagesNum++;
+        fileNames.add(f);
+        packages.add(newPackage);
+        return true;
+    }
 
     // startup import
     public void startupImport(){
-        String f = "packages/packages.txt";
         String[] tempFileNames = loadStrings(f); // there's an error message printed here if it fails but like ignore it it's Fine
         if (tempFileNames != null) {
             fileNames.addAll(Arrays.asList(tempFileNames));
@@ -484,6 +516,46 @@ public class Main extends PApplet {
         stroke (r, g, b);
         ellipse(x, y, 60, 60);
         textFormat(s, x, y + adj, 48, 1, r, g, b);
+    }
+
+    // check if anything to delete
+    public boolean checkDelete() {
+        for (int x = 0; x < toDelete.length; x++) {
+            if (toDelete[x]) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    // delete imports
+    public void runDelete() {
+        String[][] tempPackages = new String[packagesNum][];
+        String[] tempFileNames = new String[packagesNum];
+        for (int x =0; x < packages.size(); x++) {
+            tempPackages[x] = packages.get(x);
+            tempFileNames[x] = fileNames.get(x);
+        }
+        for (int x =0; x < toDelete.length; x++) {
+            if (toDelete[x]){
+                tempPackages[x] = null;
+                tempFileNames[x] = null;
+            }
+        }
+        packages.clear();
+        fileNames.clear();
+        for (int x =0; x < toDelete.length; x++) {
+            if (tempPackages[x] != null) {
+                packages.add(tempPackages[x]);
+                fileNames.add(tempFileNames[x]);
+            }
+        }
+        packagesNum = packages.size();
+        String[] write = new String[packagesNum];
+        for (int x = 0; x < write.length; x++) {
+            write[x] = fileNames.get(x);
+        }
+        // saveStrings(dataPath(f), write); // TODO: this is very broken bc of intellij (i.e. it writes to MemoryGame/data/.. instead of MemoryGame/src/data/..)
     }
 
     // MAIN
