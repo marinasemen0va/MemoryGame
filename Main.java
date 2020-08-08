@@ -58,7 +58,7 @@ public class Main extends PApplet {
 
     // scores
     ArrayList<String> scores = new ArrayList<String>();
-    int mode; 
+    int mode;
         /*
         1 - flashcards
         2 - matching
@@ -183,7 +183,7 @@ public class Main extends PApplet {
                 }
             }
         }
-    }
+    } // TODO get input for typing
 
     // mouse clicked
     public void mouseClicked() {
@@ -376,6 +376,25 @@ public class Main extends PApplet {
                 inTransition = true;
             }
         }
+        if (screen == 11) {
+            if (showAns && checkRect(width - 195, height - 100, 120, 55)) { // next
+                if (!(a.size() == 1)) {
+                    nextScreen = 11;
+                    inTransition = true;
+                } else {
+                    nextScreen = 12;
+                    inTransition = true;
+                }
+            }
+            if (!showAns && checkRect(width - 180, height - 100, 100, 55)) { // flip
+                showAns = !showAns;
+                // TODO: do match check and set colours (+ don't forget to set limit to textbox)
+            }
+            if (!edit && sq(mouseX - (width - 75)) + sq(mouseY - 75) <= sq(30)) { // exit
+                nextScreen = 12;
+                inTransition = true;
+            }
+        }
         if (screen == 12) {
             if (checkRect(width/2-60, height - 150, 120, 55)) {
                 nextScreen = 2;
@@ -385,7 +404,7 @@ public class Main extends PApplet {
                 } else if (mode == 2) {
                     scores.add("Matching - ");
                 } else {
-                    scores.add("Typing - ");
+                    scores.add("Typing - package name: " + packages.get(currentPackageNum)[0] + ", cards studied: " + ((packages.get(currentPackageNum).length-1)/2 - a.size()));
                 }
             }
         }
@@ -626,7 +645,7 @@ public class Main extends PApplet {
     }
 
     // flashcards
-    public void flashcards() { // TODO: the game
+    public void flashcards() {
         background(255,214,219);
         int r = 215, g = 158, b = 156;
         rectFormat(150, 50, width - 300, height - 200, r, g, b, false);
@@ -649,7 +668,21 @@ public class Main extends PApplet {
 
     // typing
     public void typing() {
-
+        background(255,214,219);
+        int r = 215, g = 158, b = 156;
+        rectFormat(150, 50, width - 300, height - 200, r, g, b, false);
+        rectFormat(width/2 - 550, height - 95, 950, 50, r,g, b, false);
+        textFormat("reee", width / 2 - 525, height - 70, 32, 2, 91, 91, 91); // 12 max
+        if (!showAns) {
+            textFormat(a.get(index), width / 2 - 450, height / 2 - 300, 900, 500, 60, 1, r, g, b);
+            rectFormat(width - 180, height - 100, 100, 55, r, g, b, true);
+            textFormat("flip", width - 155, height - 75, 36, 2, r, g, b);
+        } else {
+            textFormat(q.get(index), width / 2 - 450, height / 2 - 300, 900, 500, 60, 1, r, g, b);
+            rectFormat(width - 195, height - 100, 120, 55, r, g, b, true);
+            textFormat("next", width - 175, height - 75, 36, 2, r, g, b); // instead of allowing flip but correct thing into textbox and make textbox red or green depending on match
+        }
+        ellipseFormat("x", width - 75, 75, r, g, b, -3);
     }
 
     // score display
@@ -678,7 +711,7 @@ public class Main extends PApplet {
         transitionTime++;
         float transparency = (-1 * abs(transitionTime - 25) + 25) * 10;
         if (transitionTime == 25) {
-            if (screen == 9) {
+            if (screen == 9 || screen == 11) {
                 a.remove(index);
                 q.remove(index);
                 index = (int) random(0, a.size());
