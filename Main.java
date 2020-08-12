@@ -113,7 +113,7 @@ public class Main extends PApplet {
     public void setup() {
         frameRate(60);
         font = loadFont("project files/CenturyGothic-Bold-48.vlw");
-        langFont = createFont("font/cardFont.ttf", 100); // TODO: there is absolutely no support for languages other than japanese :reeeeeeee: (just be like import ur own font under the name x in this file and tadaaaa)
+        langFont = createFont("font/cardFont.ttf", 100);
         textFont(font);
         maxPackages = 6; // TODO: compute based on display
         maxScores = 7; // TODO: compute based on display
@@ -163,8 +163,6 @@ public class Main extends PApplet {
     }
 
     // TODO: fix positions and stuff in processing later
-    // TODO: keep capitalization consistent
-    // TODO: add music? lofi good
     // TODO: use ps to pick colours for every screen (repetition is fine just have enough screens separating the 2 duplicates (u should also probly draw out the flow for that))
 
     // key pressed
@@ -640,9 +638,9 @@ public class Main extends PApplet {
         background(255,214,219); int r = 215, g = 158, b = 156;
         drawCard(r, g, b);
         if (!showAns) {
-            textFormat(q.get(index), width / 2 - 450, height / 2 - 300, 900, 500, 100, 1, r, g, b, true);
+            textFormat(q.get(index), width / 2 - 450, height / 2 - 300, 900, 500, 100, 1, r, g, b, true); // TODO: make it according to display
         } else {
-            textFormat(a.get(index), width / 2 - 450, height / 2 - 300, 900, 500, 100, 1, r, g, b, true);
+            textFormat(a.get(index), width / 2 - 450, height / 2 - 300, 900, 500, 100, 1, r, g, b, true); // TODO: make it according to display
             makeButton("next", width - 125, height - 75, r, g, b);
         }
         makeButton("flip", 100, height - 75, r, g, b);
@@ -686,7 +684,7 @@ public class Main extends PApplet {
         background(255,214,219); int r = 215, g = 158, b = 156;
         drawCard(r, g, b);
         rectFormat(width/2 - 550, height - 95, 950, 50, r,g, b, false); // textbox
-        textFormat(q.get(index), width / 2 - 450, height / 2 - 300, 900, 500, 100, 1, r, g, b, true);
+        textFormat(q.get(index), width / 2 - 450, height / 2 - 300, 900, 500, 100, 1, r, g, b, true); // TODO: make it according to display
         if (!showAns) {
             textFormat(displayAnswer, width / 2 - 525, height - 70, 32, 2, 91, 91, 91);
             makeButton("show", width - 125, height - 75, r, g, b);
@@ -1002,7 +1000,7 @@ public class Main extends PApplet {
     }
 
     // draw card
-    public void drawCard(int r, int g, int b) { // TODO: make it more based on display
+    public void drawCard(int r, int g, int b) { // TODO: make it more based on display and make sure text that's being written is still within bounds
         rectFormat(150, 50, width - 300, height - 200, r, g, b, false);
     }
 
