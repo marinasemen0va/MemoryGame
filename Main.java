@@ -36,7 +36,7 @@ public class Main extends PApplet {
         12 - score display
         */
     int buttonW = 40, buttonH = 60;
-    SoundFile music;
+    SoundFile music; // TODO
     int maxPackages, maxScores;
 
     // transition
@@ -106,7 +106,7 @@ public class Main extends PApplet {
     // settings
     public void settings() {
         fullScreen();
-        smooth(0);
+        smooth(0); // TODO: see if this is best option or to just delete
     } // TODO: when moving to processing see if u can combine settings + setup
 
     // setup
@@ -244,42 +244,35 @@ public class Main extends PApplet {
                 if (name.equals("")){
                     name = "user";
                 }
-                nextScreen = 1;
-                inTransition = true;
+                setScreen(1);
             }
         }
         if (screen == 1) {
             if (checkRect("next", width/2, height - 175)) { // next
-                nextScreen = 2;
-                inTransition = true;
+                setScreen(2);
             }
         }
         if (screen == 2) {
             if (!edit && sq(mouseX - (width - 75)) + sq(mouseY - (height - 75)) <= sq(30)) { // info
-                nextScreen = 3;
-                inTransition = true;
+                setScreen(3);
             }
             if (!edit && sq(mouseX - (width - 75)) + sq(mouseY - 75) <= sq(30)) { // exit
-                nextScreen = 4;
-                inTransition = true;
+                setScreen(4);
             }
             if (!edit && checkRect("scores", 125, 70)) { // scores
-                nextScreen = 6;
                 startIndex = scores.size();
-                inTransition = true;
+                setScreen(6);
             }
             if (packagesNum == 0) {
                 if (sq(mouseX - 75) + sq(mouseY - (height - 75)) <= sq(30)) { // +
-                    nextScreen = 5;
-                    inTransition = true;
+                    setScreen(5);
                 }
             } else {
                 if (edit && checkRect("back", width - 185, height-75)) { // back from edit
                     edit = false;
                     toDelete = null;
                 } else if (edit && sq(mouseX - 75) + sq(mouseY - (height - 75)) <= sq(30)) { // +
-                    nextScreen = 5;
-                    inTransition = true;
+                    setScreen(5);
                 } else if (!edit && checkRect("edit", 100, height - 75)) { // edit
                     edit = true;
                     toDelete = new boolean[packagesNum];
@@ -298,8 +291,7 @@ public class Main extends PApplet {
                 for (int x = 0; x < packagesNum; x++) {
                     if (checkRect(width/2, 200 + (75 * x), 600, 60)) {
                         currentPackageNum = x;
-                        nextScreen = 7;
-                        inTransition = true;
+                        setScreen(7);
                     }
                 }
             }
@@ -311,29 +303,24 @@ public class Main extends PApplet {
         }
         if (screen == 3) {
             if (checkRect("back", width/2, height - 125)) { // back
-                nextScreen = 2;
-                inTransition = true;
+                setScreen(2);
             }
             if (checkRect(width/2 - 360, height/2, 240, 120)) { // about
                 infoChoice = 1;
-                nextScreen = 35;
-                inTransition = true;
+                setScreen(35);
             }
             if (checkRect(width/2, height/2, 240, 120)) { // importing
                 infoChoice = 2;
-                nextScreen = 35;
-                inTransition = true;
+                setScreen(35);
             }
             if (checkRect(width/2 + 360, height/2, 240, 120)) { // gameplay
                 infoChoice = 3;
-                nextScreen = 35;
-                inTransition = true;
+                setScreen(35);
             }
         }
         if (screen == 35) {
             if (checkRect("back", width/2, height - 125)) { // back
-                nextScreen = 3;
-                inTransition = true;
+                setScreen(3);
             }
         }
         if (screen == 4){
@@ -351,8 +338,7 @@ public class Main extends PApplet {
                     if (status) {
                         edit = false;
                         toDelete = null;
-                        nextScreen = 2;
-                        inTransition = true;
+                        setScreen(2);
                     } else {
                         error = "oops! something went wrong!";
                     }
@@ -361,47 +347,40 @@ public class Main extends PApplet {
             if (checkRect("back", 100, height-75)) { // back
                 edit = false;
                 toDelete = null;
-                nextScreen = 2;
-                inTransition = true;
+                setScreen(2);
             }
         }
         if (screen == 6) {
             if (checkRect("back", width - 125, 70)) { // back
-                nextScreen = 2;
-                inTransition = true;
+                setScreen(2);
             }
         }
         if (screen == 7) {
             if (packages.get(currentPackageNum).length-1 >= 10) {
                 if (checkRect(width/2 - 360, height/2, 240, 120)) { // flashcards
                     mode = 1;
-                    nextScreen = 8;
-                    inTransition = true;
+                    setScreen(8);
                     reset();
                 }
                 if (checkRect(width/2, height/2, 240, 120)) { // matching
                     mode = 2;
-                    nextScreen = 8;
-                    inTransition = true;
+                    setScreen(8);
                     reset();
                 }
                 if (checkRect(width/2 + 360, height/2, 240, 120)) { // typing
                     mode = 3;
-                    nextScreen = 8;
-                    inTransition = true;
+                    setScreen(8);
                     reset();
                 }
             } else {
                 if (checkRect(width/2 - 180, height/2, 240, 120)) { // flashcards
                     mode = 1;
-                    nextScreen = 8;
-                    inTransition = true;
+                    setScreen(8);
                     reset();
                 }
                 if (checkRect(width/2 + 180, height/2, 240, 120)) { // typing
                     mode = 3;
-                    nextScreen = 8;
-                    inTransition = true;
+                    setScreen(8);
                     reset();
                 }
             }
@@ -409,35 +388,29 @@ public class Main extends PApplet {
         if (screen == 8) {
             if (checkRect("play", width/2, height - 125)) { // play
                 if (mode == 1) {
-                    nextScreen = 9;
-                    inTransition = true;
+                    setScreen(9);
                 }
                 if (mode == 2) {
-                    nextScreen = 10;
-                    inTransition = true;
+                    setScreen(10);
                 }
                 if (mode == 3) {
-                    nextScreen = 11;
-                    inTransition = true;
+                    setScreen(11);
                 }
             }
         }
         if (screen == 9) {
             if (showAns && checkRect("next", width - 125, height - 75)) { // next
                 if (!(q.size() == 1)) {
-                    nextScreen = 9;
-                    inTransition = true;
+                    setScreen(9);
                 } else {
-                    nextScreen = 12;
-                    inTransition = true;
+                    setScreen(12);
                 }
             }
             if (checkRect("flip", 100, height - 75)) { // flip
                 showAns = !showAns;
             }
             if (sq(mouseX - (width - 75)) + sq(mouseY - 75) <= sq(30)) { // exit
-                nextScreen = 12;
-                inTransition = true;
+                setScreen(12);
             }
         }
         if (screen == 10) {
@@ -465,19 +438,16 @@ public class Main extends PApplet {
                 }
                 if (score == 5) {
                     showAns = true;
-                    nextScreen = 12;
-                    inTransition = true;
+                    setScreen(12);
                 }
             }
         }
         if (screen == 11) {
             if (showAns && checkRect("next", width - 125, height - 75)) { // next
                 if (!(q.size() == 1)) {
-                    nextScreen = 11;
-                    inTransition = true;
+                    setScreen(11);
                 } else {
-                    nextScreen = 12;
-                    inTransition = true;
+                    setScreen(12);
                 }
             }
             if (!showAns && checkRect("show", width - 125, height - 75)) { // show
@@ -488,22 +458,13 @@ public class Main extends PApplet {
                 }
             }
             if (sq(mouseX - (width - 75)) + sq(mouseY - 75) <= sq(30)) { // exit
-                nextScreen = 12;
-                inTransition = true;
+                setScreen(12);
             }
         }
         if (screen == 12) {
             if (checkRect("next", width/2, height - 125)) { // next
-                nextScreen = 2;
-                inTransition = true;
-                if (mode == 1) {
-                    scores.add("Flashcards - package name: " + packages.get(currentPackageNum)[0] + ", cards studied: " + ((packages.get(currentPackageNum).length-1)/2 - q.size()));
-                } else if (mode == 2) {
-                    scores.add("Matching - package name: " + packages.get(currentPackageNum)[0] + ", time taken: " + m() + ":" + s());
-                } else {
-                    int a = round((((float) score)/((packages.get(currentPackageNum).length-1)/2 - q.size()))*100);
-                    scores.add("Typing - package name: " + packages.get(currentPackageNum)[0] + ", cards studied: " + ((packages.get(currentPackageNum).length-1)/2 - q.size()) + ", accuracy: " + a + "%");
-                }
+                setScreen(2);
+                addScore();
             }
         }
     }
@@ -512,31 +473,27 @@ public class Main extends PApplet {
 
     // preloader
     public void preloader() {
-        background(184, 206, 245);
-        int r = 151, g = 180, b = 238;
-        // text
+        background(184, 206, 245); int r = 151, g = 180, b = 238;
         String[] loading = {"Loading","Loading.","Loading..", "Loading..."};
-        textFormat(loading[load], width/2 - 115, height/2 - 50, 48, 2, 255, 255, 255, false);
+        textFormat(loading[load], width/2 - 115, height/2 - 50, 48, 2, 255, 255, 255);
         loading(r, g, b, loading.length);
     }
 
     // name
     public void name() {
-        background (255, 207, 204);
-        int r = 209, g = 167, b = 172;
+        background (255, 207, 204); int r = 209, g = 167, b = 172;
         rectFormat(width/2 - 200, height/2 - 25, 400, 50, r,g, b, false); // textbox
-        textFormat("Please enter your name:", width/2, height/2 - 75, 48, 1, 255, 255, 255, false);
+        textFormat("Please enter your name:", width/2, height/2 - 75, 48, 1, 255, 255, 255);
         if (!name.equals("user")) { // restrict
-            textFormat(name, width / 2 - 175, height / 2, 32, 2, 91, 91, 91, false); // name
+            textFormat(name, width / 2 - 175, height / 2, 32, 2, 91, 91, 91); // name
         }
-        textFormat(error, width/2 - 180, height/2 + 50, 18, 2, 234, 7, 0, false);
+        textFormat(error, width/2 - 180, height/2 + 50, 18, 2, 234, 7, 0);
         makeButton("next", width/2, height - 175, r, g, b);
     }
 
     // welcome
     public void welcome() {
-        background (187, 255, 207);
-        int r = 123, g = 255, b = 168;
+        background (187, 255, 207); int r = 123, g = 255, b = 168;
         String s = "Welcome to I am Speed: a Memory Game, " + name + "!\nClick the information logo on the menu page to learn more about how to use this game! Hope you enjoy!";
         textFormat(s, width/2 - 500, height/2 - 300, 1000, 500, 46, 1, 255, 255, 255, false); // message
         makeButton("next", width/2, height - 175, r, g , b);
@@ -544,11 +501,10 @@ public class Main extends PApplet {
 
     // menu
     public void menu() {
-        background(166,242,255);
-        int r = 80, g = 211, b = 255;
+        background(166,242,255); int r = 80, g = 211, b = 255;
         title("I am Speed: a Memory Game", r, g, b);
         if (packagesNum == 0){
-            textFormat("There are no packages yet :(", width/2, height/2, 36, 1, 255,255, 255, false);
+            textFormat("There are no packages yet :(", width/2, height/2, 36, 1, 255,255, 255);
             ellipseFormat("+", 75, height - 75, r, g, b, 0);
         } else {
             if (!edit) {
@@ -586,18 +542,16 @@ public class Main extends PApplet {
 
     // info
     public void info() {
-        background(255,214,219);
-        int r = 215, g = 158, b = 156;
+        background(255,214,219); int r = 215, g = 158, b = 156;
         title("Information", r, g, b);
-        String[] labels = {"about", "gameplay", "importing"};
+        String[] labels = {"About", "Gameplay", "Importing"};
         makeBigButtons(labels, r, g, b);
         makeButton("back", width/2, height - 125, r, g, b);
     }
 
     // info display
     public void infoDisplay() { // TODO: write u fool
-        background(255,214,219);
-        int r = 215, g = 158, b = 156;
+        background(255,214,219); int r = 215, g = 158, b = 156;
         String text;
         if (infoChoice == 1) {
             title ("About", r, g, b);
@@ -616,38 +570,34 @@ public class Main extends PApplet {
 
     // exit
     public void exitGame() {
-        background(255,192,164);
-        int r = 255, g = 141, b = 109;
+        background(255,192,164); int r = 255, g = 141, b = 109;
         textFormat("Thanks for using this game!!!", width/2 - 250, height/2 - 250, 500,500, 48, 1, 255,255,255, false);
         makeButton("close", width/2, height - 175, r, g, b);
     }
 
     // import files
     public void importFiles() {
-        int r = 110, g = 217, b = 90;
-        background(207,255,149);
+        background(207,255,149); int r = 110, g = 217, b = 90;
         rectFormat(width/2 - 200, height/2 - 25, 400, 50, r,g, b, false);
-        textFormat("Please enter the file name:", width/2, height/2 - 75, 48, 1, 255, 255, 255, false);
-        textFormat(fileName, width / 2 - 175, height / 2, 32, 2, 91, 91, 91, false);
-        textFormat(error, width/2 - 180, height/2 + 50, 18, 2, 234, 7, 0, false);
+        textFormat("Please enter the file name:", width/2, height/2 - 75, 48, 1, 255, 255, 255);
+        textFormat(fileName, width / 2 - 175, height / 2, 32, 2, 91, 91, 91);
+        textFormat(error, width/2 - 180, height/2 + 50, 18, 2, 234, 7, 0);
         makeButton("import", width/2, height - 175, r, g, b);
         makeButton("back", 100, height-75, r, g, b);
     }
 
     // scores
     public void scores() {
-        background(224,213,255);
-        int r = 203, g = 153, b = 240;
+        background(224,213,255); int r = 203, g = 153, b = 240;
         title("Scores", r, g, b);
         makeButton("back", width - 125, 70, r, g, b);
         if (scores.isEmpty()) {
-            textFormat("You haven't played anything yet!", width/2, height/2, 36, 1, 255,255, 255, false);
+            textFormat("You haven't played anything yet!", width/2, height/2, 36, 1, 255,255, 255);
         } else {
             int s = Math.min(scores.size(), maxScores);
             String[] temp = new String[s]; int i = 0;
             for (int x = startIndex - 1; x >= startIndex - s; x--) {
-                temp[i] = scores.get(x);
-                i++;
+                temp[i] = scores.get(x); i++;
             }
             makeLongButtons(temp, r, g, b, 1000, 60);
         }
@@ -655,22 +605,20 @@ public class Main extends PApplet {
 
     // choose mode
     public void chooseMode() {
-        background(150, 255,138);
-        int r = 110, g = 217, b = 90;
-        textFormat("Please choose a game mode:", width/2, height/2 - 175, 48, 1, 255, 255, 255, false);
+        background(150, 255,138); int r = 110, g = 217, b = 90;
+        textFormat("Please choose a game mode:", width/2, height/2 - 175, 48, 1, 255, 255, 255);
         if (packages.get(currentPackageNum).length-1 >= 10) {
-            String[] labels = {"flashcards", "typing", "matching"};
+            String[] labels = {"Flashcards", "Typing", "Matching"};
             makeBigButtons(labels, r, g, b);
         } else {
-            String[] labels = {"flashcards", "typing"};
+            String[] labels = {"Flashcards", "Typing"};
             makeBigButtons(labels, r, g, b);
         }
     }
 
     // instructions
     public void instructions() {
-        background(255,214,219);
-        int r = 215, g = 158, b = 156;
+        background(255,214,219); int r = 215, g = 158, b = 156;
         String text, title;
         if (mode == 1) { // TODO: write u fool
             text = "";
@@ -689,8 +637,7 @@ public class Main extends PApplet {
 
     // flashcards
     public void flashcards() {
-        background(255,214,219);
-        int r = 215, g = 158, b = 156;
+        background(255,214,219); int r = 215, g = 158, b = 156;
         drawCard(r, g, b);
         if (!showAns) {
             textFormat(q.get(index), width / 2 - 450, height / 2 - 300, 900, 500, 100, 1, r, g, b, true);
@@ -704,8 +651,7 @@ public class Main extends PApplet {
 
     // matching
     public void matching() {
-        background(255,214,219);
-        int r = 215, g = 158, b = 156;
+        background(255,214,219); int r = 215, g = 158, b = 156;
         if (showAns) {
             drawCard(r, g, b);
             if (deck[chosenCard] < 5) {
@@ -731,19 +677,18 @@ public class Main extends PApplet {
                     }
                 }
             }
-            textFormat(m() + ":" + s(), width / 2, height - 60, 60, 1, 255, 255, 255, false);
+            textFormat(m() + ":" + s(), width / 2, height - 60, 60, 1, 255, 255, 255);
         }
     }
 
     // typing
     public void typing() {
-        background(255,214,219);
-        int r = 215, g = 158, b = 156;
+        background(255,214,219); int r = 215, g = 158, b = 156;
         drawCard(r, g, b);
         rectFormat(width/2 - 550, height - 95, 950, 50, r,g, b, false); // textbox
         textFormat(q.get(index), width / 2 - 450, height / 2 - 300, 900, 500, 100, 1, r, g, b, true);
         if (!showAns) {
-            textFormat(displayAnswer, width / 2 - 525, height - 70, 32, 2, 91, 91, 91, false);
+            textFormat(displayAnswer, width / 2 - 525, height - 70, 32, 2, 91, 91, 91);
             makeButton("show", width - 125, height - 75, r, g, b);
         } else {
             if (correct) {
@@ -759,8 +704,7 @@ public class Main extends PApplet {
 
     // score display
     public void scoreDisplay() {
-        background(178,216,255);
-        int r = 121, g = 178, b = 213;
+        background(178,216,255); int r = 121, g = 178, b = 213;
         title ("Score", r, g, b);
         String text;
         if (mode == 1) {
@@ -810,41 +754,26 @@ public class Main extends PApplet {
     }
 
     // unboxed text shadow
-    public void textShadow (String s, float a, float b, int ts) {
+    public void textShadow (String s, float a, float b) {
         fill(0, 0, 0, 75);
-        if (ts <= 24){
-            text(s, a + 1, b + 1);
-        } else {
-            text(s, a + 1, b + 1);
-        }
+        text(s, a + 1, b + 1);
     }
 
     // boxed text shadow
-    public void textShadow (String s, float a, float b, float c, float d, int ts) {
+    public void textShadow (String s, float a, float b, float c, float d) {
         fill(0, 0, 0, 75);
-        if (ts <= 24){
-            text(s, a + 1, b + 1, c, d);
-        } else {
-            text(s, a + 1, b + 1, c, d);
-        }
+        text(s, a + 1, b + 1, c, d);
     }
 
     // unboxed text format
-    public void textFormat (String s, float x, float y, int textSize, int textAlign, int r, int g, int b, boolean card) {
-        if (card) {
-            textFont(langFont);
-        } else {
-            textFont (font);
-        }
+    public void textFormat (String s, float x, float y, int textSize, int textAlign, int r, int g, int b) {
         if (textAlign == 1) {
             textAlign(CENTER, CENTER);
-        } else if (textAlign == 2) {
-            textAlign(LEFT, CENTER);
         } else {
-            textAlign(RIGHT, CENTER);
+            textAlign(LEFT, CENTER);
         }
         textSize(textSize);
-        textShadow(s, x, y, textSize);
+        textShadow(s, x, y);
         fill(r, g, b);
         text(s, x, y);
     }
@@ -858,13 +787,11 @@ public class Main extends PApplet {
         }
         if (textAlign == 1) {
             textAlign(CENTER, CENTER);
-        } else if (textAlign == 2) {
-            textAlign(LEFT, CENTER);
         } else {
-            textAlign(RIGHT, CENTER);
+            textAlign(LEFT, CENTER);
         }
         textSize(textSize);
-        textShadow(s, x, y, w, h, textSize);
+        textShadow(s, x, y, w, h);
         fill(r, g, b);
         text(s, x, y, w, h);
     }
@@ -922,7 +849,7 @@ public class Main extends PApplet {
         strokeWeight(5);
         stroke (r, g, b);
         ellipse(x, y, 60, 60);
-        textFormat(s, x, y + adj, 48, 1, r, g, b, false);
+        textFormat(s, x, y + adj, 48, 1, r, g, b);
     }
 
     // check if anything to delete
@@ -963,7 +890,7 @@ public class Main extends PApplet {
     // title
     public void title(String t, int r, int g, int b) {
         rectFormat(width/2-400, 25, 800, 100, r, g, b, false);
-        textFormat(t, width/2, 75, 48, 1, r, g, b, false);
+        textFormat(t, width/2, 75, 48, 1, r, g, b);
     }
 
     // reset variables
@@ -1053,7 +980,7 @@ public class Main extends PApplet {
         textFont(font);
         textSize(36);
         rectFormat(x - (textWidth(s)/2) - (buttonW/2), y - buttonH/2, textWidth(s) + buttonW, buttonH, r, g, b, true);
-        textFormat(s, x, y, 36, 1, r, g, b, false);
+        textFormat(s, x, y, 36, 1, r, g, b);
     }
 
     // make button custom
@@ -1081,16 +1008,13 @@ public class Main extends PApplet {
 
     // loading
     public void loading(int r, int g,  int b, int l) {
-        // bar
         noStroke();
         fill(255);
-        rect(width/2 - 200, height/2, barV, 20);
-        // border
+        rect(width/2 - 200, height/2, barV, 20); // bar
         noFill();
         strokeWeight(5);
         stroke(r,g,b);
-        rect(width/2 - 200, height/2, 400, 20);
-        // compute
+        rect(width/2 - 200, height/2, 400, 20); // border
         if (barV >= 400) {
             nextScreen = 0;
             inTransition = true;
@@ -1100,7 +1024,6 @@ public class Main extends PApplet {
                 barV = 400;
             }
             delay(200);
-            // loading animation
             load++;
             if (load == l) {
                 load = 0;
@@ -1126,6 +1049,24 @@ public class Main extends PApplet {
     public void setMatches(int n) {
         for (int x = 0; x < 2; x++) {
             matches[selected.get(x)] = n;
+        }
+    }
+
+    // set screen
+    public void setScreen(int n) {
+        nextScreen = n;
+        inTransition = true;
+    }
+
+    // add score
+    public void addScore() {
+        if (mode == 1) {
+            scores.add("Flashcards - package name: " + packages.get(currentPackageNum)[0] + ", cards studied: " + ((packages.get(currentPackageNum).length-1)/2 - q.size()));
+        } else if (mode == 2) {
+            scores.add("Matching - package name: " + packages.get(currentPackageNum)[0] + ", time taken: " + m() + ":" + s());
+        } else {
+            int a = round((((float) score)/((packages.get(currentPackageNum).length-1)/2 - q.size()))*100);
+            scores.add("Typing - package name: " + packages.get(currentPackageNum)[0] + ", cards studied: " + ((packages.get(currentPackageNum).length-1)/2 - q.size()) + ", accuracy: " + a + "%");
         }
     }
 
