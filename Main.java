@@ -38,7 +38,7 @@ public class Main extends PApplet {
     int buttonW = 40, buttonH = 60;
     SoundFile music; // TODO
     int maxPackages, maxScores;
-    int r, g, b;
+    int r, g, b, grey = 125;
 
     // transition
     int transitionTime = 0;
@@ -116,8 +116,8 @@ public class Main extends PApplet {
         font = loadFont("project files/CenturyGothic-Bold-48.vlw");
         langFont = createFont("font/cardFont.ttf", 100);
         textFont(font);
-        maxPackages = 6; // TODO: compute based on display
-        maxScores = 7; // TODO: compute based on display
+        maxPackages = (height - (200 - buttonH/2) - (50 + buttonH/2)) / 75; // (width - widthOfTitle - widthOfDelete) / (widthOfButton + widthOfGap)
+        maxScores = (height - (200 - buttonH/2) - 25) / 75; // (width - widthOfTitle - widthOfBottom) / (widthOfButton + widthOfGap)
         startupImport();
         // music = new SoundFile(this, "music/music.wav"); // TODO: doesn't work :reeeee: try in processing later
         // music.play();
@@ -483,7 +483,7 @@ public class Main extends PApplet {
         rectFormat(width/2 - 200, height/2 - 25, 400, 50, r,g, b, false); // textbox
         textFormat("Please enter your name:", width/2, height/2 - 75, 48, 1, 255, 255, 255);
         if (!name.equals("user")) { // restrict
-            textFormat(name, width / 2 - 175, height / 2, 32, 2, 91, 91, 91); // name
+            textFormat(name, width / 2 - 175, height / 2, 32, 2, grey, grey, grey); // name
         }
         textFormat(error, width/2 - 180, height/2 + 50, 18, 2, 234, 7, 0);
         makeButton("next", width/2, height - 175, r, g, b);
@@ -517,13 +517,13 @@ public class Main extends PApplet {
                     ellipseFormat("+", 75, height - 75, r, g, b, 0);
                 }
                 if (!checkDelete()) {
-                    makeButton("delete", width / 2, height - 50, 91, 91, 91);
+                    makeButton("delete", width / 2, height - 50, grey, grey, grey);
                 } else {
                     makeButton("delete", width / 2, height - 50, r, g, b);
                 }
                 for (int x = 0; x < packagesNum; x++) {
                     if (!toDelete[x]) {
-                        makeButton(packages.get(x)[0], width/2, 200 + (75 * x), 91, 91, 91, 600, 60);
+                        makeButton(packages.get(x)[0], width/2, 200 + (75 * x), grey, grey, grey, 600, 60);
                     } else {
                         makeButton(packages.get(x)[0], width/2, 200 + (75 * x), r, g, b, 600, 60);
                     }
@@ -580,7 +580,7 @@ public class Main extends PApplet {
         setColour(4);
         rectFormat(width/2 - 200, height/2 - 25, 400, 50, r,g, b, false);
         textFormat("Please enter the file name:", width/2, height/2 - 75, 48, 1, 255, 255, 255);
-        textFormat(fileName, width / 2 - 175, height / 2, 32, 2, 91, 91, 91);
+        textFormat(fileName, width / 2 - 175, height / 2, 32, 2, grey, grey, grey);
         textFormat(error, width/2 - 180, height/2 + 50, 18, 2, 234, 7, 0);
         makeButton("import", width/2, height - 175, r, g, b);
         makeButton("back", 100, height-75, r, g, b);
@@ -638,11 +638,10 @@ public class Main extends PApplet {
     // flashcards
     public void flashcards() {
         setColour(3);
-        drawCard(r, g, b);
         if (!showAns) {
-            textFormat(q.get(index), width / 2 - 450, height / 2 - 300, 900, 500, 100, 1, r, g, b, true); // TODO: make it according to display
+            drawCard(q.get(index), r, g, b);
         } else {
-            textFormat(a.get(index), width / 2 - 450, height / 2 - 300, 900, 500, 100, 1, r, g, b, true); // TODO: make it according to display
+            drawCard(a.get(index), r, g, b);
             makeButton("next", width - 125, height - 75, r, g, b);
         }
         makeButton("flip", 100, height - 75, r, g, b);
@@ -653,11 +652,10 @@ public class Main extends PApplet {
     public void matching() {
         setColour(5);
         if (showAns) {
-            drawCard(r, g, b);
             if (deck[chosenCard] < 5) {
-                textFormat(q.get(deck[chosenCard]), width / 2 - 450, height / 2 - 300, 900, 500, 100, 1, r, g, b, true);
+                drawCard(q.get(deck[chosenCard]), r, g, b);
             } else {
-                textFormat(a.get(deck[chosenCard] - 5), width / 2 - 450, height / 2 - 300, 900, 500, 100, 1, r, g, b, true);
+                drawCard(a.get(deck[chosenCard] - 5), r, g, b);
             }
             makeButton("close", width - 125, height - 75, r, g, b);
         } else {
@@ -673,7 +671,7 @@ public class Main extends PApplet {
                         matches[y*5 + x] = 0;
                     }
                     if (selected.size() == 1 && y*5 + x == chosenCard) {
-                        rectFormat(125 + ((150 + ((width - 250 - (5 * 150)) / 4)) * x), 50 + (300 * y), 150, 250, 91,91, 91, true);
+                        rectFormat(125 + ((150 + ((width - 250 - (5 * 150)) / 4)) * x), 50 + (300 * y), 150, 250, grey,grey, grey, true);
                     }
                 }
             }
@@ -684,11 +682,10 @@ public class Main extends PApplet {
     // typing
     public void typing() {
         setColour(1);
-        drawCard(r, g, b);
         rectFormat(width/2 - 550, height - 95, 950, 50, r,g, b, false); // textbox
-        textFormat(q.get(index), width / 2 - 450, height / 2 - 300, 900, 500, 100, 1, r, g, b, true); // TODO: make it according to display
+        drawCard(q.get(index), r, g, b);
         if (!showAns) {
-            textFormat(displayAnswer, width / 2 - 525, height - 70, 32, 2, 91, 91, 91);
+            textFormat(displayAnswer, width / 2 - 525, height - 70, 32, 2, grey, grey, grey);
             makeButton("show", width - 125, height - 75, r, g, b);
         } else {
             if (correct) {
@@ -696,7 +693,7 @@ public class Main extends PApplet {
             } else {
                 rectFormat(width/2 - 550, height - 95, 950, 50, 255,72, 80, false);
             }
-            textFormat(a.get(index), width / 2 - 525, height - 94, 900, 50, 32, 2, 91, 91, 91, false);
+            textFormat(a.get(index), width / 2 - 525, height - 94, 900, 50, 32, 2, grey, grey, grey, false);
             makeButton("next", width - 125, height - 75, r, g, b);
         }
         ellipseFormat("x", width - 75, 75, r, g, b, -3);
@@ -1002,8 +999,9 @@ public class Main extends PApplet {
     }
 
     // draw card
-    public void drawCard(int r, int g, int b) { // TODO: make it more based on display and make sure text that's being written is still within bounds
+    public void drawCard(String s, int r, int g, int b) {
         rectFormat(150, 50, width - 300, height - 200, r, g, b, false);
+        textFormat(s, 175, 75, width - 300 - 50, height - 200 - 50, 100, 1, r, g, b, true);
     }
 
     // loading
