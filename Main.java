@@ -675,7 +675,11 @@ public class Main extends PApplet {
                     }
                 }
             }
-            textFormat(m() + ":" + s(), width / 2, height - 60, 60, 1, 255, 255, 255);
+            if (s() >= 10) {
+                textFormat(m() + ":" + s(), width / 2, height - 60, 60, 1, 255, 255, 255);
+            } else {
+                textFormat(m() + ":0" + s(), width / 2, height - 60, 60, 1, 255, 255, 255);
+            }
         }
     }
 
