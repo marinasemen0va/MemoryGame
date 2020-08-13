@@ -17,7 +17,7 @@ public class Main extends PApplet {
 
     // main
     PFont font, langFont;
-    int screen = -1, nextScreen;
+    int screen = 2, nextScreen;
         /*
         -1 - preloader
         0 - name
@@ -38,6 +38,7 @@ public class Main extends PApplet {
     int buttonW = 40, buttonH = 60;
     SoundFile music; // TODO
     int maxPackages, maxScores;
+    int r, g, b;
 
     // transition
     int transitionTime = 0;
@@ -163,7 +164,6 @@ public class Main extends PApplet {
     }
 
     // TODO: fix positions and stuff in processing later
-    // TODO: use ps to pick colours for every screen (repetition is fine just have enough screens separating the 2 duplicates (u should also probly draw out the flow for that))
 
     // key pressed
     public void keyPressed() {
@@ -471,7 +471,7 @@ public class Main extends PApplet {
 
     // preloader
     public void preloader() {
-        background(184, 206, 245); int r = 151, g = 180, b = 238;
+        setColour(5);
         String[] loading = {"Loading","Loading.","Loading..", "Loading..."};
         textFormat(loading[load], width/2 - 115, height/2 - 50, 48, 2, 255, 255, 255);
         loading(r, g, b, loading.length);
@@ -479,7 +479,7 @@ public class Main extends PApplet {
 
     // name
     public void name() {
-        background (255, 207, 204); int r = 209, g = 167, b = 172;
+        setColour(3);
         rectFormat(width/2 - 200, height/2 - 25, 400, 50, r,g, b, false); // textbox
         textFormat("Please enter your name:", width/2, height/2 - 75, 48, 1, 255, 255, 255);
         if (!name.equals("user")) { // restrict
@@ -491,7 +491,7 @@ public class Main extends PApplet {
 
     // welcome
     public void welcome() {
-        background (187, 255, 207); int r = 123, g = 255, b = 168;
+        setColour(4);
         String s = "Welcome to I am Speed: a Memory Game, " + name + "!\nClick the information logo on the menu page to learn more about how to use this game! Hope you enjoy!";
         textFormat(s, width/2 - 500, height/2 - 300, 1000, 500, 46, 1, 255, 255, 255, false); // message
         makeButton("next", width/2, height - 175, r, g , b);
@@ -499,7 +499,7 @@ public class Main extends PApplet {
 
     // menu
     public void menu() {
-        background(166,242,255); int r = 80, g = 211, b = 255;
+        setColour(1);
         title("I am Speed: a Memory Game", r, g, b);
         if (packagesNum == 0){
             textFormat("There are no packages yet :(", width/2, height/2, 36, 1, 255,255, 255);
@@ -540,7 +540,7 @@ public class Main extends PApplet {
 
     // info
     public void info() {
-        background(255,214,219); int r = 215, g = 158, b = 156;
+        setColour(3);
         title("Information", r, g, b);
         String[] labels = {"About", "Gameplay", "Importing"};
         makeBigButtons(labels, r, g, b);
@@ -549,16 +549,18 @@ public class Main extends PApplet {
 
     // info display
     public void infoDisplay() { // TODO: write u fool
-        background(255,214,219); int r = 215, g = 158, b = 156;
         String text;
         if (infoChoice == 1) {
+            setColour(2);
             title ("About", r, g, b);
             String temp = "This game is meant for educational purposes, specifically to make learning faster and more efficient."; // TODO
             text = "";
         } else if (infoChoice == 2) {
+            setColour(4);
             title("Importing", r, g, b);
             text = "";
         } else {
+            setColour(5);
             title ("Gameplay", r, g, b);
             text = "";
         }
@@ -568,14 +570,14 @@ public class Main extends PApplet {
 
     // exit
     public void exitGame() {
-        background(255,192,164); int r = 255, g = 141, b = 109;
+        setColour(3);
         textFormat("Thanks for using this game!!!", width/2 - 250, height/2 - 250, 500,500, 48, 1, 255,255,255, false);
         makeButton("close", width/2, height - 175, r, g, b);
     }
 
     // import files
     public void importFiles() {
-        background(207,255,149); int r = 110, g = 217, b = 90;
+        setColour(4);
         rectFormat(width/2 - 200, height/2 - 25, 400, 50, r,g, b, false);
         textFormat("Please enter the file name:", width/2, height/2 - 75, 48, 1, 255, 255, 255);
         textFormat(fileName, width / 2 - 175, height / 2, 32, 2, 91, 91, 91);
@@ -586,7 +588,7 @@ public class Main extends PApplet {
 
     // scores
     public void scores() {
-        background(224,213,255); int r = 203, g = 153, b = 240;
+        setColour(2);
         title("Scores", r, g, b);
         makeButton("back", width - 125, 70, r, g, b);
         if (scores.isEmpty()) {
@@ -603,7 +605,7 @@ public class Main extends PApplet {
 
     // choose mode
     public void chooseMode() {
-        background(150, 255,138); int r = 110, g = 217, b = 90;
+        setColour(3);
         textFormat("Please choose a game mode:", width/2, height/2 - 175, 48, 1, 255, 255, 255);
         if (packages.get(currentPackageNum).length-1 >= 10) {
             String[] labels = {"Flashcards", "Typing", "Matching"};
@@ -616,7 +618,7 @@ public class Main extends PApplet {
 
     // instructions
     public void instructions() {
-        background(255,214,219); int r = 215, g = 158, b = 156;
+        setColour(4);
         String text, title;
         if (mode == 1) { // TODO: write u fool
             text = "";
@@ -635,7 +637,7 @@ public class Main extends PApplet {
 
     // flashcards
     public void flashcards() {
-        background(255,214,219); int r = 215, g = 158, b = 156;
+        setColour(3);
         drawCard(r, g, b);
         if (!showAns) {
             textFormat(q.get(index), width / 2 - 450, height / 2 - 300, 900, 500, 100, 1, r, g, b, true); // TODO: make it according to display
@@ -649,7 +651,7 @@ public class Main extends PApplet {
 
     // matching
     public void matching() {
-        background(255,214,219); int r = 215, g = 158, b = 156;
+        setColour(5);
         if (showAns) {
             drawCard(r, g, b);
             if (deck[chosenCard] < 5) {
@@ -681,7 +683,7 @@ public class Main extends PApplet {
 
     // typing
     public void typing() {
-        background(255,214,219); int r = 215, g = 158, b = 156;
+        setColour(1);
         drawCard(r, g, b);
         rectFormat(width/2 - 550, height - 95, 950, 50, r,g, b, false); // textbox
         textFormat(q.get(index), width / 2 - 450, height / 2 - 300, 900, 500, 100, 1, r, g, b, true); // TODO: make it according to display
@@ -702,7 +704,7 @@ public class Main extends PApplet {
 
     // score display
     public void scoreDisplay() {
-        background(178,216,255); int r = 121, g = 178, b = 213;
+        setColour(4);
         title ("Score", r, g, b);
         String text;
         if (mode == 1) {
@@ -1065,6 +1067,21 @@ public class Main extends PApplet {
         } else {
             int a = round((((float) score)/((packages.get(currentPackageNum).length-1)/2 - q.size()))*100);
             scores.add("Typing - package name: " + packages.get(currentPackageNum)[0] + ", cards studied: " + ((packages.get(currentPackageNum).length-1)/2 - q.size()) + ", accuracy: " + a + "%");
+        }
+    }
+
+    // set colour
+    public void setColour(int n){
+        if (n == 1) {
+            background(184,237,243); r = 130; g = 195; b = 209;
+        } else if (n == 2) {
+            background(214,202,224); r = 186; g = 161; b = 209;
+        } else if (n == 3) {
+            background (255, 207, 204); r = 209; g = 167; b = 172;
+        } else if (n == 4) {
+            background (187, 255, 207); r = 123; g = 255; b = 168;
+        } else if (n == 5) {
+            background(184, 206, 245); r = 151; g = 180; b = 238;
         }
     }
 
