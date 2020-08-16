@@ -13,7 +13,7 @@ import processing.sound.*;
 
 // main
 PFont font, langFont;
-int screen = 2, nextScreen;
+int screen = -1, nextScreen;
     /*
     -1 - preloader
     0 - name
