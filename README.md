@@ -15,7 +15,7 @@
 - select a package to use and click on the button that displays its name
 - enjoy the game! (•‿•)
 
-##About
+## About
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;This is a game developed for the 
 purpose of learning things faster, hence its name. It is intended to help 
 improve memorization. This educational tool was developed for personal use 
@@ -24,7 +24,7 @@ with the goal of learning new languages but is available publicly on
 around using “packages” containing pairs of information. See the Importing 
 page for more details. 
 
-##Importing
+## Importing
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;For a package to be valid, it must be 
 a .txt file in data/packages, it must contain its name in its first line, 
 and the remaining lines must be pairs of information. Additionally, 
@@ -33,7 +33,7 @@ anything in data/project files or the game may not work properly.
 Remember that if the content of a line is too long it may not be 
 shown entirely, and the same goes for the package name.
 
-##Gameplay
+## Gameplay
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;This game has three modes: 
 flashcards, matching, and typing. Flashcards are meant to help 
 study the content, matching is meant to help remember said content, 
@@ -41,7 +41,7 @@ and typing allows one to apply their knowledge. Each game mode is
 explained further when selected. The matching mode will only be 
 available is there are 5 or more pairs in a package.
 
-####Flashcards
+#### Flashcards
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;This game mode is for 
 learning the material. It is simply going through a deck of 
 cards with the pairs on both sides of each card. This game 
@@ -51,7 +51,7 @@ recorded. The flip button on the game screen allows the
 user to flip between the two sides of the card, and the 
 next button will take the user to the following card. 
 
-####Matching
+#### Matching
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;This game mode allows 
 one to practice their knowledge of the material. There 
 will be 10 cards on the screen, and one will be scored 
@@ -62,7 +62,7 @@ while if they have a red border they are not a match.
 The card with the grey border will indicate the first 
 card of the two chosen.
 
-####Typing
+#### Typing
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;This game mode 
 is intended for the application of learned material. 
 One will enter their answer in the text box and press 
