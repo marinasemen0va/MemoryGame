@@ -12,7 +12,7 @@ boolean inTransition = false;
 
 // file stuff
 ArrayList<String[]> packages = new ArrayList<String[]>();
-ArrayList<String> fileNames = new ArrayList<String>();
+ArrayList<String> fileNames = new ArrayList<String>(); // TODO: honestly it's a bit redundant having the name in the file if there is the file names (fix later?)
 String fileName = "";
 int packagesNum = 0;
 boolean edit = false;
