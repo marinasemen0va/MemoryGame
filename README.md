@@ -8,7 +8,7 @@
 ## Setup
 - have [Processing](https://processing.org/download/ "download Processing") installed 
 - download [`MemoryGame-master.zip`](https://github.com/marinasemen0va/MemoryGame/archive/master.zip "download MemoryGame-master.zip") and unzip it
-- put any packages in `processing/MemoryGame/data/packages`
+- put any packages in `processing/MemoryGame/data/packages` (there are a couple packages included (greek alphabet, hiragana, katakana))
 - if a new font is needed replace `cardFont.ttf` in `data/font` with a file of the same name and extension
 - open `processing/MemoryGame/MemoryGame.pde` in Processing and run it
 - on the menu screen, click the `+` button to import the packages from `processing/MemoryGame/data/packages`
