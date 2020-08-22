@@ -132,10 +132,10 @@ void exitGame() {
 // import files
 void importFiles() {
     setColour(4);
-    rectFormat(width/2 - 200, height/2 - 25, 400, 50, r,g, b, false);
+    rectFormat(width/2 - 450, height/2 - 25, 900, 50, r,g, b, false);
     textFormat("Please enter the file name:", width/2, height/2 - 75, 48, 1, 255, 255, 255);
-    textFormat(fileName, width / 2 - 175, height / 2, 32, 2, grey, grey, grey);
-    textFormat(error, width/2 - 180, height/2 + 50, 18, 2, 234, 7, 0);
+    textFormat(fileName, width / 2 - 425, height / 2, 32, 2, grey, grey, grey);
+    textFormat(error, width/2 - 430, height/2 + 50, 18, 2, 234, 7, 0);
     makeButton("import", width/2, height - 175, r, g, b);
     makeButton("back", 100, height-75, r, g, b);
 }

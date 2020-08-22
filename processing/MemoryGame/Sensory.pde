@@ -6,6 +6,8 @@
 
 // key pressed
 void keyPressed() {
+    textSize(36);
+    textFont(font);
     if (key != ENTER) {
         if (screen == 0) {
             if (width / 2 - 175 + textWidth(name + key) >= width/2 + 225) {
@@ -24,7 +26,7 @@ void keyPressed() {
             }
         }
         if (screen == 5) {
-            if (width / 2 - 175 + textWidth(fileName + key) >= width/2 + 225) {
+            if (width/2 - 425 + textWidth(fileName + key) >= width/2 + 875) {
                 error = "the file name cannot be longer!";
             } else {
                 error = "";
