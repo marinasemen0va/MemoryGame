@@ -219,6 +219,7 @@ void reset() {
     } else {
         matches = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
         chosenCard = -1;
+        showAns = false;
         q.clear();
         a.clear();
         ArrayList<String> tempQ = new ArrayList<String>();
@@ -384,7 +385,11 @@ void addScore() {
     if (mode == 1) {
         scores.add("Flashcards - package name: " + packages.get(currentPackageNum)[0] + ", cards studied: " + ((packages.get(currentPackageNum).length-1)/2 - q.size()));
     } else if (mode == 2) {
-        scores.add("Matching - package name: " + packages.get(currentPackageNum)[0] + ", time taken: " + m() + ":" + s());
+        if (s() >= 10) {
+            scores.add("Matching - package name: " + packages.get(currentPackageNum)[0] + ", time taken: " + m() + ":" + s());
+        } else {
+            scores.add("Matching - package name: " + packages.get(currentPackageNum)[0] + ", time taken: " + m() + ":0" + s());
+        }
     } else {
         int a = round((((float) score)/((packages.get(currentPackageNum).length-1)/2 - q.size()))*100);
         scores.add("Typing - package name: " + packages.get(currentPackageNum)[0] + ", cards studied: " + ((packages.get(currentPackageNum).length-1)/2 - q.size()) + ", accuracy: " + a + "%");

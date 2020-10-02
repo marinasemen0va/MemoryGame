@@ -200,29 +200,29 @@ void mouseClicked() {
         if (packages.get(currentPackageNum).length-1 >= 10) {
             if (checkRect(width/2 - 360, height/2, 240, 120)) { // flashcards
                 mode = 1;
-                setScreen(8);
                 reset();
+                setScreen(8);
             }
             if (checkRect(width/2, height/2, 240, 120)) { // matching
                 mode = 2;
-                setScreen(8);
                 reset();
+                setScreen(8);
             }
             if (checkRect(width/2 + 360, height/2, 240, 120)) { // typing
                 mode = 3;
-                setScreen(8);
                 reset();
+                setScreen(8);
             }
         } else {
             if (checkRect(width/2 - 180, height/2, 240, 120)) { // flashcards
                 mode = 1;
-                setScreen(8);
                 reset();
+                setScreen(8);
             }
             if (checkRect(width/2 + 180, height/2, 240, 120)) { // typing
                 mode = 3;
-                setScreen(8);
                 reset();
+                setScreen(8);
             }
         }
     }
